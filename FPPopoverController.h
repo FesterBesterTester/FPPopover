@@ -52,6 +52,9 @@
 /** @brief The tint of the popover. **/
 @property(nonatomic,assign) FPPopoverTint tint;
 
+/** @brief An array of views that the user can interact with while the popover is visible. **/
+@property(nonatomic,copy) NSArray *passthroughViews;
+
 /** @brief Popover border, default is YES **/
 @property(nonatomic, assign) BOOL border;
 

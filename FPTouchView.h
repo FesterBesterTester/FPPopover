@@ -21,4 +21,6 @@ typedef void (^FPTouchedInsideBlock)();
 
 -(void)setTouchedInsideBlock:(FPTouchedInsideBlock)insideBlock;
 
+@property(nonatomic,copy) NSArray *passthroughViews;
+
 @end

@@ -10,13 +10,14 @@
 #import "ARCMacros.h"
 
 @implementation FPTouchView
+@synthesize passthroughViews = _passthroughViews;
 
 -(void)dealloc
 {
 #ifdef FP_DEBUG
     NSLog(@"FPTouchView dealloc");
 #endif
-    
+    SAFE_ARC_RELEASE(_passthroughViews);
     SAFE_ARC_RELEASE(_insideBlock);
     SAFE_ARC_RELEASE(_outsideBlock);
     SAFE_ARC_SUPER_DEALLOC();
@@ -52,6 +53,25 @@
                     break;
                 }
             }            
+        }
+
+        // Perform passthroughViews logic
+        if (!touchedInside)
+        {
+            for (UIView *passthroughView in _passthroughViews)
+            {
+                UIView *passthroughHit = [passthroughView hitTest:[passthroughView convertPoint:point
+                                                                                       fromView:self]
+                                                        withEvent:event];
+                if (passthroughHit)
+                {
+                    // We found a hit with a passthrough view.
+                    //
+                    // Immediately return that view, without
+                    // invoking _outsideBlock.
+                    return passthroughHit;
+                }
+            }
         }
         
         if(touchedInside && _insideBlock)

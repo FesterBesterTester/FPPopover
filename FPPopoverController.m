@@ -172,6 +172,16 @@
     return _contentView.tint;
 }
 
+-(void)setPassthroughViews:(NSArray *)passthroughViews
+{
+    _touchView.passthroughViews = passthroughViews;
+}
+
+-(NSArray *)passthroughViews
+{
+    return _touchView.passthroughViews;
+}
+
 #pragma mark - View lifecycle
 
 -(void)setupView
