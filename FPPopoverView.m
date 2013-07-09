@@ -341,6 +341,13 @@
         colors[4] = colors[5] = colors[6] = 1.0;
         colors[3] = colors[7] = 1.0;
     }
+    else if(self.tint == FPPopoverYellowTint)
+    {
+        colors[0] = colors[4] = 255.0/255.0;
+        colors[1] = colors[5] = 249.0/255.0;
+        colors[2] = colors[6] = 188.0/255.0;
+        colors[3] = colors[7] = 1.0;
+    }
     
 
     CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, NULL, 2);
@@ -408,6 +415,10 @@
     else if(self.tint == FPPopoverWhiteTint)
     {
         CGContextSetRGBFillColor(ctx, 1, 1, 1, 1.0);
+    }
+    else if(self.tint == FPPopoverYellowTint)
+    {
+        CGContextSetRGBFillColor(ctx, 255.0/255.0, 249.0/255.0, 188.0/255.0, 1.0);
     }
 
     
