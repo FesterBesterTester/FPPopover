@@ -372,31 +372,14 @@
 {
 	_deviceOrientation = [UIDevice currentDevice].orientation;
 
-	BOOL shouldResetView = NO;
+	BOOL shouldResetView;
 
     //iOS6 has a new orientation implementation.
     //we ask to reset the view if is >= 6.0
 	if ([_viewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)] &&
         [[[UIDevice currentDevice] systemVersion] floatValue] < 6.0)
 	{
-		UIInterfaceOrientation interfaceOrientation;
-		switch (_deviceOrientation)
-		{
-			case UIDeviceOrientationLandscapeLeft:
-				interfaceOrientation = UIInterfaceOrientationLandscapeLeft;
-				break;
-			case UIDeviceOrientationLandscapeRight:
-				interfaceOrientation = UIInterfaceOrientationLandscapeRight;
-				break;
-			case UIDeviceOrientationPortrait:
-				interfaceOrientation = UIInterfaceOrientationPortrait;
-				break;
-			case UIDeviceOrientationPortraitUpsideDown:
-				interfaceOrientation = UIInterfaceOrientationPortraitUpsideDown;
-				break;
-			default:
-				return;	// just ignore face up / face down, etc.
-		}
+        shouldResetView = NO;
 	}
 	else
 	{
@@ -438,16 +421,11 @@
     // thanks @Niculcea
     // If we presentFromPoint with _fromView nil will calculate based on self.orgin with 2x2 size.
     // Fix for presentFromPoint from avolovoy's FPPopover fork
-    float width = 2.0f;
-    float height = 2.0f;
     CGPoint p = CGPointMake(self.origin.x, self.origin.y);
     
     if (v != nil) {
         p = [v.superview convertPoint:v.frame.origin toView:self.view];
-        width = v.frame.size.width;
-        height = v.frame.size.height;
     }
-    
     
     CGFloat ht = p.y; //available vertical space on top of the view
     CGFloat hb = [self parentHeight] -  (p.y + v.frame.size.height); //on the bottom
@@ -466,7 +444,6 @@
     if(FPPopoverArrowDirectionIsVertical(self.arrowDirection) || 
        (self.arrowDirection == FPPopoverArrowDirectionAny && best_h >= best_w))
     {
-
         //ok, will be vertical
         if(ht == best_h || self.arrowDirection == FPPopoverArrowDirectionDown)
         {
@@ -484,12 +461,8 @@
             r.origin.x = p.x + v.frame.size.width/2.0 - r.size.width/2.0;
             r.origin.y = p.y + v.frame.size.height;
         }
-        
-
     }
-    
-    
-    else 
+    else
     {
         //ok, will be horizontal
         //the arrow must NOT be forced to left
@@ -500,7 +473,6 @@
 
             r.origin.x = p.x - r.size.width;
             r.origin.y = p.y + v.frame.size.height/2.0 - r.size.height/2.0;
-
         }
         else
         {
@@ -510,25 +482,20 @@
             r.origin.x = p.x + v.frame.size.width;
             r.origin.y = p.y + v.frame.size.height/2.0 - r.size.height/2.0;
         }
-        
-
     }
-    
-    
-    
+
     //need to moved left ? 
     if(r.origin.x + r.size.width > [self parentWidth])
     {
         r.origin.x = [self parentWidth] - r.size.width;
     }
-    
+
     //need to moved right ?
     else if(r.origin.x < 0)
     {
         r.origin.x = 0;
     }
-    
-    
+
     //need to move up?
     if(r.origin.y < 0)
     {
@@ -536,20 +503,19 @@
         r.origin.y = 0;
         r.size.height += old_y;
     }
-    
+
     //need to be resized horizontally ?
     if(r.origin.x + r.size.width > [self parentWidth])
     {
         r.size.width = [self parentWidth] - r.origin.x;
     }
-    
+
     //need to be resized vertically ?
     if(r.origin.y + r.size.height > [self parentHeight])
     {
         r.size.height = [self parentHeight] - r.origin.y;
     }
-    
-    
+
     if([[UIApplication sharedApplication] isStatusBarHidden] == NO)
     {
         if(r.origin.y <= 20) r.origin.y += 20;
@@ -558,7 +524,7 @@
     //check if the developer wants and arrow
     if(self.arrowDirection != FPPopoverNoArrow)
         _contentView.arrowDirection = bestDirection;
-    
+
     //no arrow
     else _contentView.arrowDirection = FPPopoverNoArrow;
 
